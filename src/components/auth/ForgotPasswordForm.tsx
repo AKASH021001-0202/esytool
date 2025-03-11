@@ -5,35 +5,44 @@ import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
+import axios from "axios"; // Removed { AxiosError }
+
+
+
 
 export default function ForgotPasswordForm() {
   const [email, setEmail] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
 
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (!email) {
       toast.error("Please enter your email address.");
       return;
     }
-    
+
     try {
       setLoading(true);
       const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/forget-password`, { email });
-      
+
       toast.success(response.data.message || "Password reset link sent! Check your email.");
       setEmail("");
       setTimeout(() => {
         navigate("/reset-password");
       }, 3000);
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Something went wrong. Please try again.");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.message || "Something went wrong. Please try again.");
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
     } finally {
       setLoading(false);
     }

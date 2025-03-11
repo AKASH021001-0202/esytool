@@ -1,11 +1,12 @@
-import clsx from "clsx"; // Install with: npm install clsx
+import React from "react";
+import clsx from "clsx";
 
 interface CheckboxProps {
   label?: string;
   checked: boolean;
   className?: string;
   id?: string;
-  onChange: (checked: boolean) => void;
+  onChange: (checked: boolean) => void; // Passes a boolean, not an event
   disabled?: boolean;
 }
 
@@ -34,7 +35,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
           className
         )}
         checked={checked}
-        onChange={(e) => onChange(e.target.checked)}
+        onChange={(e) => onChange(e.target.checked)} // Passes the checked state to the parent
         disabled={disabled}
       />
       {label && <span className="text-sm font-medium">{label}</span>}
