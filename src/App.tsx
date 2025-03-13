@@ -22,6 +22,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ForgotPassword from "./pages/AuthPages/ForgotPassword";
 import ResetPassword from "./pages/AuthPages/ResetPassword";
+import HomePage from "./components/pages/HomePage";
 const App: React.FC = () => {
   return (
     <><ToastContainer />
@@ -34,8 +35,14 @@ const App: React.FC = () => {
 
       {/* Dashboard Layout */}
       <Route element={<PrivateRoute />}>
+
+
+        
+        <Route index path="/" element={<HomePage />} />
+     
+      
         <Route element={<AppLayout />}>
-          <Route index path="/" element={<Home />} />
+          <Route index path="/dashboard" element={<Home />} />
           <Route path="/profile" element={<UserProfiles />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/blank" element={<Blank />} />

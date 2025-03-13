@@ -7,6 +7,8 @@ import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
 
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+
 export default function ResetPasswordForm() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -17,16 +19,25 @@ export default function ResetPasswordForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!password || !confirmPassword) {
       toast.error("Please fill in all fields.");
       return;
     }
+
     if (password !== confirmPassword) {
       toast.error("Passwords do not match.");
       return;
     }
+
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      toast.error("Password must be at least 8 characters long and include at least one letter and one number.");
+      return;
+    }
+
     if (!token) {
       toast.error("Invalid or missing reset token.");
       return;
@@ -34,11 +45,12 @@ export default function ResetPasswordForm() {
 
     try {
       setLoading(true);
-      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/reset-password`, { password, token });
+      await axios.post(`${BASE_URL}/reset-password`, { newPassword: password, token });
       toast.success("Password reset successful! Redirecting to login...");
       setTimeout(() => navigate("/signin"), 3000);
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Something went wrong. Please try again.");
+    } catch (error:any) {
+      const errMsg = error.response?.data?.message || "Something went wrong. Please try again.";
+      toast.error(errMsg);
     } finally {
       setLoading(false);
     }
