@@ -27,7 +27,7 @@ const Hero: React.FC = () => {
           <div className="md:w-1/2 mt-10 md:mt-0 flex justify-center">
             <div className="relative">
               <img
-                src="../../../public/images/logo/hero.gif" // Replace with actual image URL
+                src="./images/logo/hero.gif" // Replace with actual image URL
                 alt="Preview"
                 className="rounded-lg border-4 border-blue-500 shadow-xl w-72"
               />
