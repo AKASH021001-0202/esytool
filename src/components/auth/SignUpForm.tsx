@@ -55,11 +55,11 @@ export default function SignUpForm() {
 
     // Validate password strength
     if (name === "password") {
-      const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+      const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
       setErrors({
         ...errors,
         passwordStrength: !passwordRegex.test(value)
-          ? "Password must be at least 8 characters long and include a letter, number, and special character."
+          ? "Password must be at least 8 characters long and include a letter and a number (no special characters)."
           : "",
       });
     }
